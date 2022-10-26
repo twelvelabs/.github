@@ -7,12 +7,10 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 ## Submitting a pull request
 
 - Fork and clone the repository.
-- Bootstrap the repo for local development: `make setup`
+- Follow the setup instructions in the README.
 - Create a new branch: `git checkout -b my-branch-name`
 - Make your change.
-- Verify tests and formatting rules:
-  - `make test`
-  - `make lint`
+- Verify tests and formatting rules.
 - Push to your fork and submit a pull request.
 - Wait for your pull request to be reviewed and merged. :sparkles:
 
