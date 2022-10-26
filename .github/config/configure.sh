@@ -49,7 +49,6 @@ for repo in $repos; do
         echo ""
         echo "PAUSING UNTIL QUOTA RESET @ ${formatted}"
         echo ""
-
         sleep "${reset}"
     fi
 
