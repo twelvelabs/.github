@@ -20,7 +20,7 @@ for repo in $repos; do
         --input=".github/config/repo.json" >/dev/null
 
     echo "[${repo}] Configuring branch and tag protection rules"
-    branch=$(gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name')
+    branch=$(gh repo view "${repo}" --json defaultBranchRef --jq '.defaultBranchRef.name')
     gh api -X PUT "/repos/:owner/:repo/branches/${branch}/protection" \
         --input=".github/config/branch-protection.json" >/dev/null
     # There doesn't appear to be an idempotent way to set tag protection rules,
