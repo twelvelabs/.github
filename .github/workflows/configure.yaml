@@ -1,0 +1,26 @@
+---
+name: configure
+
+on:
+  schedule:
+    # Daily at 12:12pm.
+    - cron: "12 12 * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/config/*"
+      - ".github/workflows/configure.yaml"
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # pin@v3
+      - run: ".github/config/configure.sh"
+        env:
+          GITHUB_TOKEN: "${{ secrets.CONFIGURE_REPOS_TOKEN }}"
