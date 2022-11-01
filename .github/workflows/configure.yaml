@@ -2,6 +2,7 @@
 name: configure
 
 on:
+  workflow_dispatch:
   schedule:
     # Daily at 12:12pm.
     - cron: "12 12 * * *"
