@@ -19,16 +19,20 @@ for repo in $repos; do
     gh api -X PATCH /repos/:owner/:repo \
         --input=".github/config/repo.json" >/dev/null
 
-    echo "[${repo}] Configuring branch and tag protection rules"
-    branch=$(gh repo view "${repo}" --json defaultBranchRef --jq '.defaultBranchRef.name')
-    gh api -X PUT "/repos/:owner/:repo/branches/${branch}/protection" \
-        --input=".github/config/branch-protection.json" >/dev/null
-    # There doesn't appear to be an idempotent way to set tag protection rules,
-    # so we have to check to see if one exists first.
-    rule_id=$(gh api /repos/:owner/:repo/tags/protection \
-        --jq '.[] | select(.pattern=="v.*") | .id')
-    if [[ "${rule_id}" == "" ]]; then
-        gh api -X POST /repos/:owner/:repo/tags/protection -f pattern='v.*' >/dev/null
+    # Don't add protection rules on the repo that has the profile README
+    # because it needs to be able to freely push to the default branch.
+    if [[ "${repo}" != "${owner}/${owner}" ]]; then
+        echo "[${repo}] Configuring branch and tag protection rules"
+        branch=$(gh repo view "${repo}" --json defaultBranchRef --jq '.defaultBranchRef.name')
+        gh api -X PUT "/repos/:owner/:repo/branches/${branch}/protection" \
+            --input=".github/config/branch-protection.json" >/dev/null
+        # There doesn't appear to be an idempotent way to set tag protection rules,
+        # so we have to check to see if one exists first.
+        rule_id=$(gh api /repos/:owner/:repo/tags/protection \
+            --jq '.[] | select(.pattern=="v.*") | .id')
+        if [[ "${rule_id}" == "" ]]; then
+            gh api -X POST /repos/:owner/:repo/tags/protection -f pattern='v.*' >/dev/null
+        fi
     fi
 
     echo "[${repo}] Configuring automated security features"
