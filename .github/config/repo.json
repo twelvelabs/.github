@@ -7,10 +7,5 @@
     "delete_branch_on_merge": true,
     "squash_merge_commit_message": "BLANK",
     "squash_merge_commit_title": "PR_TITLE",
-    "web_commit_signoff_required": false,
-    "security_and_analysis": {
-        "secret_scanning": {
-            "status": "enabled"
-        }
-    }
+    "web_commit_signoff_required": false
 }
