@@ -21,7 +21,7 @@ jobs:
   configure:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # pin@v3
+      - uses: actions/checkout@v4
       - run: ".github/config/configure.sh"
         env:
           GITHUB_TOKEN: "${{ secrets.CONFIGURE_REPOS_TOKEN }}"
