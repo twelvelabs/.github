@@ -26,13 +26,12 @@ for repo in $repos; do
         branch=$(gh repo view "${repo}" --json defaultBranchRef --jq '.defaultBranchRef.name')
         gh api -X PUT "/repos/:owner/:repo/branches/${branch}/protection" \
             --input=".github/config/branch-protection.json" >/dev/null
-        # There doesn't appear to be an idempotent way to set tag protection rules,
-        # so we have to check to see if one exists first.
-        rule_id=$(gh api /repos/:owner/:repo/tags/protection \
-            --jq '.[] | select(.pattern=="v.*") | .id')
-        if [[ "${rule_id}" == "" ]]; then
-            gh api -X POST /repos/:owner/:repo/tags/protection -f pattern='v.*' >/dev/null
-        fi
+        # Tag protection rules have been replaced with the new Rule Sets feature.
+        # rule_id=$(gh api /repos/:owner/:repo/tags/protection \
+        #     --jq '.[] | select(.pattern=="v.*") | .id')
+        # if [[ "${rule_id}" == "" ]]; then
+        #     gh api -X POST /repos/:owner/:repo/tags/protection -f pattern='v.*' >/dev/null
+        # fi
     fi
 
     echo "[${repo}] Configuring automated security features"
